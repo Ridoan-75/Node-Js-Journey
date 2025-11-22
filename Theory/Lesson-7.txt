@@ -1,0 +1,281 @@
+###############################################################
+    Runtime Differences & The Game Changer Concept of IIFE  
+###############################################################
+
+===============================================================
+# 1. Introduction
+===============================================================
+JavaScript দুই জায়গায় রান করতে পারে:
+
+1) Browser Runtime (Chrome, Firefox, Safari…)  
+2) Server-side Runtime (Node.js)
+
+দুটোই JavaScript চালায়, কিন্তু runtime environment সম্পূর্ণ আলাদা।
+
+এবং IIFE (Immediately Invoked Function Expression) —  
+JavaScript এর সবচেয়ে powerful features এর একটি, যেটা runtime differences বুঝলে crystal clear হয়।
+
+এই file-এ A–Z পুরো ব্যাখ্যা করা হলো।
+
+===============================================================
+# 2. Runtime (Browser vs Node.js) — Concept
+===============================================================
+JavaScript = Single language  
+কিন্তু দুই ধরনের environment-এ execute হয়:
+
+################ Browser Runtime ################
+- window object আছে  
+- DOM আছে  
+- alert(), prompt(), document etc.  
+- ES Modules + Script Execution  
+- Event loop (Browser implementation)
+
+################ Node.js Runtime ################
+- global object (window নয়)  
+- require() / module.exports  
+- fs, http, path modules  
+- Package ecosystem (npm)  
+- Own event loop (libuv)  
+- No DOM, No alert()
+
+===============================================================
+# 3. Runtime Differences (Detailed Breakdown)
+===============================================================
+
+###################################################
+# A. Global Object Difference
+###################################################
+
+Browser:
+---------------------
+console.log(window);  // available
+---------------------
+
+Node.js:
+---------------------
+console.log(global);  // window নাই
+---------------------
+
+###################################################
+# B. Module System Difference
+###################################################
+
+Browser:
+- Uses ES Modules (import/export) or script tags
+
+Node.js:
+- CommonJS (require/export)
+- ES Modules optional (.mjs)
+
+Example:
+---------------------
+const fs = require("fs");  // Node specific
+---------------------
+
+Browser এ এই কোড রান করবে না।
+
+###################################################
+# C. Event Loop Difference
+###################################################
+- Browser event loop handled by C++ (Web APIs)
+- Node.js event loop handled by libuv
+
+###################################################
+# D. Available APIs Difference
+###################################################
+
+Browser:
+- document  
+- localStorage  
+- fetch  
+- DOM Events  
+
+Node:
+- filesystem (fs)  
+- http server  
+- process  
+- streams  
+- buffers  
+
+###################################################
+# E. Execution Context Difference
+###################################################
+Browser → Script global scope তৈরি করে  
+Node.js → প্রতিটি file-কে module scope হিসেবে চালায়
+
+Meaning:
+Node.js এ top-level variable global নয়।
+
+===============================================================
+# 4. IIFE (Immediately Invoked Function Expression)
+===============================================================
+IIFE হচ্ছে এমন একটি Function যেটা:
+
+- Declare হবার সাথে সাথেই execute হয়  
+- Own scope তৈরি করে  
+- Global pollution কমায়  
+- Runtime differences handle করতে সাহায্য করে  
+
+Syntax:
+---------------------------------------------------------------
+(function () {
+  console.log("IIFE executed!");
+})();
+---------------------------------------------------------------
+
+or
+
+(() => {
+  console.log("Arrow IIFE");
+})();
+---------------------------------------------------------------
+
+===============================================================
+# 5. কেন IIFE Game Changer?
+===============================================================
+
+###################### Reason 1:  
+# Global Scope Pollution Prevent
+######################
+Browser runtime এ globally variable declare দিলে  
+window object polluted হয়ে যায়।
+
+IIFE ব্যবহার করলে সব variable নিজের scope-এ থাকে।
+
+---------------------
+(function () {
+  let secret = 777; // stays inside function
+})();
+console.log(secret); // ❌ error
+---------------------
+
+###################### Reason 2:  
+# Node.js module scope mimic করে
+######################
+Browser মূলত global scope-এ script চালায়,  
+কিন্তু Node.js প্রতিটি file-কে module হিসেবে execute করে।
+
+IIFE browser script-কে Node.js-এর মতো scoped behavior দেয়।
+
+###################### Reason 3:  
+# Runtime Difference Handling
+######################
+Browser আর Node.js runtime differences handle করতে  
+IIFE best solution।
+
+Example: Environment detect করা
+---------------------------------------------------------------
+(function () {
+  if (typeof window !== "undefined") {
+    console.log("Browser Runtime Detected");
+  } else if (typeof global !== "undefined") {
+    console.log("Node.js Runtime Detected");
+  }
+})();
+---------------------------------------------------------------
+
+###################### Reason 4:  
+# Private variable তৈরি করার একমাত্র old-school উপায়
+######################
+Before ES Modules / classes  
+IIFE was the ONLY way to create private scope.
+
+###################### Reason 5:  
+# Immediately executed initialization logic
+######################
+Setup/run করার কাজ instantly করা যায়:
+
+---------------------------------------------------------------
+const app = (() => {
+  const version = "1.0.0";
+  return {
+    start() {
+      console.log("App started, version:", version);
+    }
+  }
+})();
+
+app.start();
+---------------------------------------------------------------
+
+===============================================================
+# 6. IIFE Types (All Variants)
+===============================================================
+
+################ Classic IIFE ################
+(function(){})();
+
+################ Arrow IIFE ################
+(() => {})();
+
+################ Async IIFE ################
+(async () => {
+  await fetch(...);
+})();
+
+################ Passing Arguments ################
+(function (name) {
+  console.log("Hello", name);
+})("Node.js");
+
+################ Named IIFE ################
+(function initApp(){
+  console.log("Init...");
+})();
+
+===============================================================
+# 7. IIFE in Node.js (Why still useful?)
+===============================================================
+
+Even though Node.js scoped environment safe,  
+IIFE এখনো useful.
+
+Reason:
+- Prevent top-level await
+- Encapsulation
+- Initialization tasks
+- Prevent accidental global leaks
+- Real-time module bootstrap
+
+Example:
+---------------------------------------------------------------
+(async function bootstrap() {
+  const http = require("http");
+  console.log("Server bootstrapping...");
+})();
+---------------------------------------------------------------
+
+===============================================================
+# 8. A–Z Summary (Exam + Interview Ready)
+===============================================================
+
+A → Avoid global pollution  
+B → Browser vs Node runtime differences handle  
+C → Create private scope  
+D → Detect environment smartly  
+E → Execute immediately  
+F → Faster script bootstrapping  
+G → Global namespace clean  
+H → Helps modular pattern  
+I → Initialization logic instantly run  
+J → JavaScript execution isolation  
+K → Keeps variables safe  
+L → Lightweight mechanism  
+M → Mimics module system  
+N → No global leaks  
+O → Old but still powerful  
+P → Protects sensitive values  
+Q → Quick setup functions  
+R → Runtime behavior isolation  
+S → Scope management  
+T → Top-level code encapsulation  
+U → Useful in both Browser & Node  
+V → Variables remain private  
+W → Works without ES Modules  
+X → eXtra control on execution  
+Y → Yield control in async IIFE  
+Z → Zero conflicts with global scope  
+
+===============================================================
+                         THE END
+===============================================================
