@@ -1,0 +1,191 @@
+=====================================================
+ Event Driven Architecture of Node.js
+=====================================================
+
+###########################################################
+# 1. Event-Driven Architecture কী?
+###########################################################
+Node.js এ পুরো সিস্টেমটি "ঘটনা" বা Event এর উপর কাজ করে।
+এক লাইনে সংক্ষেপে:
+➡ “কোনো কাজ ঘটলে Node.js সেই Event ধরবে এবং তার জন্য নির্দিষ্ট Handler চালাবে।”
+
+এর মানে:
+- কাজ হবে Signal/Event এর ভিত্তিতে
+- Node.js অপেক্ষা করে থাকে না
+- Event ঘটলেই Callback বা Handler trigger হয়
+
+###########################################################
+# 2. কেন Node.js Event-Driven?
+###########################################################
+Node.js তৈরি হয়েছিল:
+- High performance server বানানোর জন্য
+- হাজার হাজার concurrent request handle করার জন্য
+- Non-blocking system বানানোর জন্য
+
+Thread-per-request model (PHP, Java, Python) = বেশি resource লাগে  
+Event-driven model (Node.js) = কম resource, massive concurrency
+
+###########################################################
+# 3. Core Components of Event-Driven Architecture
+###########################################################
+
+1) Event Loop
+   - Node.js এর হৃদপিণ্ড
+   - Continuously loop করে events process করে
+   - Asynchronous tasks manage করে
+
+2) Event Queue
+   - Pending events জমা রাখার জায়গা
+
+3) Event Emitter
+   - Event তৈরি করে এবং trigger করে
+   - Node.js এ built-in module → "events"
+
+4) Callbacks / Handlers
+   - Event ঘটলে যে function executed হয়
+
+5) libuv
+   - Asynchronous I/O এবং thread pool manage করে
+
+###########################################################
+# 4. Flow of Event-Driven Architecture (Step-by-Step)
+###########################################################
+Node.js এ একটি কাজ কীভাবে চলে:
+
+1) User / system request পাঠায়  
+2) Event queue তে event যুক্ত হয়  
+3) Event loop queue তে event detect করে  
+4) If asynchronous → thread pool এ পাঠায়  
+5) কাজ সম্পন্ন হলে callback আবার event queue তে ফিরে আসে  
+6) Event loop callback execute করে  
+7) Response পাঠানো হয়  
+
+এই পুরো সিস্টেমটি:
+➡ Non-blocking  
+➡ Highly scalable  
+
+###########################################################
+# 5. Simple Example of Event Emitter
+###########################################################
+
+Example code:
+
+const EventEmitter = require("events");
+const emitter = new EventEmitter();
+
+emitter.on("greet", () => {
+  console.log("Hello! Event has been triggered.");
+});
+
+emitter.emit("greet");
+
+###########################################################
+# 6. কেন Event-Driven Architecture দ্রুত?
+###########################################################
+কারণ:
+- প্রতিটি request এর জন্য নতুন thread তৈরি হয় না
+- Memory usage কম
+- Context-switching এর overhead নেই
+- Non-blocking I/O → main thread block হয় না
+
+Node.js handle করতে পারে:
+➡ Thousands to Millions connections concurrently
+
+###########################################################
+# 7. কোথায় Event-Driven Model সবচেয়ে কাজে লাগে?
+###########################################################
+Node.js বিশেষভাবে উপযোগী:
+- Chat applications  
+- Real-time dashboards  
+- Notifications  
+- Streaming apps  
+- IoT systems  
+- File operations  
+- API servers  
+- Pub/Sub systems  
+
+###########################################################
+# 8. Event Loop Phases (Internal Flow)
+###########################################################
+Event loop ৭টি major phase এ কাজ করে:
+
+1) Timers (setTimeout, setInterval)  
+2) Pending callbacks  
+3) Idle / Prepare  
+4) Poll (most important)  
+5) Check (setImmediate)  
+6) Close callbacks  
+7) Microtasks queue (Promises)  
+
+###########################################################
+# 9. Event-Driven vs Thread-Based Architecture
+###########################################################
+
+Feature Comparison:
+
+Event-Driven (Node.js):
+- Single thread  
+- Low memory usage  
+- Excellent scalability  
+- Non-blocking I/O  
+- Best for I/O-heavy apps  
+
+Thread-Based (Java, PHP):
+- Multiple threads  
+- High memory usage  
+- Limited scalability  
+- Blocking I/O  
+- Best for CPU-heavy apps  
+
+###########################################################
+# 10. Real Example: HTTP Server in Node.js
+###########################################################
+
+Example code:
+
+const http = require("http");
+
+const server = http.createServer((req, res) => {
+  console.log("Request received");
+  res.end("Hello from Node!");
+});
+
+server.listen(3000, () => {
+  console.log("Server started...");
+});
+
+###########################################################
+# 11. Node.js সর্বোচ্চ শক্তি কী Event-Driven মডেলে?
+###########################################################
+A–Z summary:
+
+A → Async by default  
+B → Better scalability  
+C → Concurrency without threads  
+D → Designed for I/O-heavy tasks  
+E → Event loop core  
+F → Fast execution  
+G → Great for realtime apps  
+H → Handles thousands of clients  
+I → Ideal for microservices  
+J → JavaScript everywhere  
+K → Keeps main thread free  
+L → Low memory usage  
+M → Massive concurrency  
+N → Non-blocking operations  
+O → Optimized event queue  
+P → Pub/Sub ready  
+Q → Queue-based processing  
+R → Reactive system  
+S → Single-threaded efficiency  
+T → Thread pool for heavy work  
+U → Ultra-lightweight servers  
+V → V8 powered  
+W → WebSockets friendly  
+X → eXtreme performance  
+Y → Yield handling optimized  
+Z → Zero downtime with clustering  
+
+=====================================================
+                  THE END
+=====================================================
