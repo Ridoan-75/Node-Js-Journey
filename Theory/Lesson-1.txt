@@ -1,0 +1,257 @@
+============================================================
+                    HOW THE WEB WORKS
+============================================================
+
+0. INTRO: WEB আসলে কী?
+------------------------------------------------------------
+Web = বিশ্বজুড়ে সংযুক্ত কম্পিউটারগুলোর নেটওয়ার্ক  
+যেখানে Browser → Internet → Server → Browser  
+এই রিকোয়েস্ট–রেসপন্স এর মাধ্যমে ওয়েবসাইট দেখানো হয়।
+
+============================================================
+1. URL (UNIFORM RESOURCE LOCATOR)
+------------------------------------------------------------
+একটি URL এর অংশগুলো:
+
+Example:
+https://www.example.com:443/home?page=1#section2
+
+(1) Protocol/Scheme -> https
+(2) Hostname/Domain -> www.example.com
+(3) Port -> 443
+(4) Path -> /home
+(5) Query String -> ?page=1
+(6) Fragment -> #section2
+
+============================================================
+2. DNS (DOMAIN NAME SYSTEM) — INTERNET এর ফোনবুক
+------------------------------------------------------------
+Browser প্রথমে domain → IP এ convert করে।
+
+Full DNS Workflow:
+1. Browser Cache check করে
+2. OS Cache check করে
+3. Router Cache check করে
+4. Recursive DNS Resolver এ যায়
+5. Root Server এ যায়
+6. TLD Server (.com/.org) এ যায়
+7. Authoritative DNS Server থেকে আসল IP পায়
+8. Browser IP নিয়ে server এ request পাঠায়
+
+DNS এর কাজ: Domain → IP তে রূপান্তর
+
+============================================================
+3. IP ADDRESS কী?
+------------------------------------------------------------
+Internet এ প্রতিটি ডিভাইস এর একটি ইউনিক ঠিকানা:
+- IPv4 (e.g. 142.250.190.206)
+- IPv6 (e.g. 2402:4000:1234::abcd)
+
+============================================================
+4. TCP/UDP — TRANSPORT PROTOCOLS
+------------------------------------------------------------
+
+TCP (Transmission Control Protocol)
+------------------------------------------------------------
+- Reliable
+- Connection-based
+- Packet loss হলে পুনরায় পাঠায়
+Used for:
+- Websites
+- Email
+- API
+
+UDP (User Datagram Protocol)
+------------------------------------------------------------
+- Fast
+- Connectionless
+- Packet loss হলেও চিন্তা করে না
+Used for:
+- Videos
+- Games
+- Live streaming
+
+============================================================
+5. HTTP / HTTPS
+------------------------------------------------------------
+
+HTTP
+------------------------------------------------------------
+- Unencrypted
+- Old system
+
+HTTPS
+------------------------------------------------------------
+- SSL/TLS সিকিউর চ্যানেল
+- Encryption + authentication
+- Modern websites MUST use HTTPS
+
+HTTPS Handshake সংক্ষেপে:
+1. Browser → Server: Hello + Supported ciphers
+2. Server → Browser: SSL certificate
+3. Browser verifies certificate
+4. Browser creates encryption key
+5. Both sides encrypted communication শুরু করে
+
+============================================================
+6. WHAT IS A SERVER?
+------------------------------------------------------------
+Server = কম্পিউটার যা request শুনে এবং response দেয়।
+
+Server করতে পারে:
+- Node.js
+- PHP
+- Python
+- Java
+- Go
+
+============================================================
+7. REQUEST–RESPONSE CYCLE (VERY IMPORTANT)
+------------------------------------------------------------
+
+Step 1: Browser URL নেয়  
+Step 2: DNS থেকে IP নেয়  
+Step 3: Browser TCP connection খুলে  
+Step 4: HTTP/HTTPS request পাঠায়  
+Step 5: Server request process করে  
+Step 6: Server response পাঠায় (HTML/CSS/JS/JSON)  
+Step 7: Browser render করে  
+
+============================================================
+8. STATIC VS DYNAMIC WEBSITE
+------------------------------------------------------------
+
+Static
+------------------------------------------------------------
+- Fixed content
+- HTML/CSS only
+- No database
+
+Dynamic
+------------------------------------------------------------
+- Backend code চলে
+- Database থেকে data আনে
+- API driven
+
+============================================================
+9. API (APPLICATION PROGRAMMING INTERFACE)
+------------------------------------------------------------
+API = Server থেকে data নেওয়ার পদ্ধতি।
+
+Example:
+GET /users  
+POST /login  
+
+Response:
+- JSON format  
+- Browser/Frontend consume করে  
+
+============================================================
+10. STATUS CODES (INTERVIEW IMPORTANT)
+------------------------------------------------------------
+
+2xx → Success  
+200 OK  
+201 Created  
+
+3xx → Redirect  
+301 Moved Permanently  
+
+4xx → Client Error  
+400 Bad Request  
+401 Unauthorized  
+403 Forbidden  
+404 Not Found  
+
+5xx → Server Error  
+500 Internal Server Error  
+503 Service Unavailable  
+
+============================================================
+11. COOKIES, SESSIONS, TOKEN
+------------------------------------------------------------
+
+Cookies
+------------------------------------------------------------
+- Browser এ store হয়
+- ছোট ডাটা
+- Login/session এর জন্য ব্যবহৃত
+
+Session
+------------------------------------------------------------
+- Server-side storage
+- User identify করতে ব্যবহৃত
+
+Token (JWT)
+------------------------------------------------------------
+- Stateless authentication
+- Modern web এ সবচেয়ে জনপ্রিয়
+
+============================================================
+12. BROWSER INTERNAL WORKING
+------------------------------------------------------------
+
+HTML → DOM Tree  
+CSS → CSSOM Tree  
+DOM + CSSOM → Render Tree  
+Render Tree → Layout → Paint → Composite
+
+============================================================
+13. CRITICAL RENDERING PATH
+------------------------------------------------------------
+- Browser HTML parse করে
+- CSS blocking
+- JS blocking
+- Final render
+
+============================================================
+14. CACHE SYSTEMS
+------------------------------------------------------------
+
+Browser Cache
+------------------------------------------------------------
+আগের ফাইল save থাকে — website fast load হয়।
+
+Server-side Cache
+------------------------------------------------------------
+Repeated data cache করে server load কমায়।
+
+CDN Cache
+------------------------------------------------------------
+Content globally cache করে — worldwide fast speed।
+
+============================================================
+15. CDN (CONTENT DELIVERY NETWORK)
+------------------------------------------------------------
+CDN = World-wide servers যেখানে static files store থাকে।
+
+উদাহরণ: Cloudflare, Akamai, AWS CloudFront
+
+============================================================
+16. LOAD BALANCER
+------------------------------------------------------------
+Load Balancer গুলো server এ traffic balance করে।
+
+Example:
+User → Load Balancer → Server 1 / Server 2 / Server 3
+
+============================================================
+17. FIREWALL & SECURITY
+------------------------------------------------------------
+- Server protect করে  
+- Malicious traffic filter করে  
+
+============================================================
+18. RECAP: WEB JOURNEY (SHORT SUMMARY)
+------------------------------------------------------------
+১) User URL দেয়  
+২) DNS → IP  
+৩) Browser → Server request  
+৪) Server → Logic execute  
+৫) DB → Data fetch  
+৬) Server → Response পাঠায়  
+৭) Browser → Render করে  
+
+============================================================
+                         THE END 
+============================================================
